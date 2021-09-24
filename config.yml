@@ -1,0 +1,9 @@
+targets:
+  qywx1:
+    template: ./tmpls/default.js
+    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=9df9f6b7-898c-4049-964e-24487a447d79
+    type: weixin
+  qywx2:
+    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=f3f1c07e-86b1-44e5-9d0f-93750c5545ce
+    type: weixin
+ports: 8061

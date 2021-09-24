@@ -1,0 +1,29 @@
+{
+  "name": "fastify-prometheus-webhook-adapter",
+  "version": "0.1.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node ./index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "prometheus",
+    "webhook",
+    "dingding",
+    "dingtalk",
+    "wx"
+  ],
+  "author": "BarleyBig",
+  "license": "ISC",
+  "dependencies": {
+    "dayjs": "^1.10.7",
+    "fastify": "^3.21.3",
+    "js-yaml": "^4.1.0",
+    "undici-fetch": "^1.0.0-rc.4"
+  },
+  "devDependencies": {
+    "@types/node": "^16.9.2",
+    "@tsconfig/node16": "^1.0.2"
+  }
+}
