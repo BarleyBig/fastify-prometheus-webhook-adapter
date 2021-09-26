@@ -1,7 +1,7 @@
 FROM node:16-alpine
 COPY package.json /app/package.json
 COPY ./*.js ./*.yml /app/
-COPY body-templates /app/body-templates
+COPY adapters /app/adapters
 COPY tmpls /app/tmpls
 
 RUN cd /app && npm install --production --registry=https://registry.npm.taobao.org
