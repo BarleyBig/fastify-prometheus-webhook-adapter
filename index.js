@@ -15,16 +15,24 @@ config.targets.forEach(p => {
     const adapter = {
         tmpl: fs.readFileSync(tmpl, { encoding: 'utf8' }),
         fetcher: fetcher(p.url),
-        bodyCreater: require(`./body-templates/${p.type}`).creater
+        bodyCreater: require(`./adapters/${p.type}`).createrBoday
     }
     server.decorate(p.name, adapter)
 })
 
-server.get('/', async () => {
+server.get('/*', async (request, reply) => {
     return 'OK'
 })
-server.post('/', async function (request, reply) {
-    await Promise.all(adapters.map(p => {
+server.post('/*', async function (request, reply) {
+    // console.log(request.params['*']);
+    let names = adapters
+    if (request.params['*']) {
+        const specifieds = request.params['*'].split('/').filter(p => p)
+        names = names.filter(p => specifieds.some(q => q === p))
+    }
+    names.length || (names = adapters)
+    // return names
+    await Promise.all(names.map(p => {
         const adapter = this[p]
         const body = adapter.bodyCreater(eval(`((info, dayjs) => {
             return ${adapter.tmpl}

@@ -1,4 +1,4 @@
-exports.creater = function (content) {
+exports.createrBoday = function (content) {
     return JSON.stringify({
         msgtype: 'markdown',
         markdown: { content }
