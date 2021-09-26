@@ -21,7 +21,14 @@ config.targets.forEach(p => {
 })
 
 server.get('/*', async (request, reply) => {
-    return 'OK'
+    return `# HELP alertmanager_alerts How many alerts by state.
+# TYPE alertmanager_alerts gauge
+alertmanager_alerts{state="active"} 1
+alertmanager_alerts{state="suppressed"} 0
+# HELP alertmanager_alerts_invalid_total The total number of received alerts that were invalid.
+# TYPE alertmanager_alerts_invalid_total counter
+alertmanager_alerts_invalid_total{version="v1"} 0
+alertmanager_alerts_invalid_total{version="v2"} 0`
 })
 server.post('/*', async function (request, reply) {
     // console.log(request.params['*']);
