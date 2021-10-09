@@ -8,9 +8,18 @@ const defHeaders = new Headers({
 exports.default = (url) => {
     const request = new Request(url, {
         headers: defHeaders,
-        method: 'POST'
+        method: 'POST',
+        keepalive: true
     })
     return (body) => {
         return fetch(request, { body })
     }
+}
+
+exports.fetchUrl = (url, body) => {
+    return fetch(new Request(url, {
+        headers: defHeaders,
+        method: 'POST',
+        keepalive: true
+    }), { body })
 }

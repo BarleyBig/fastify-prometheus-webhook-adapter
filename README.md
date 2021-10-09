@@ -1,2 +1,4 @@
 # fastify-prometheus-webhook-adapter
-a prometheus webhook adapter,use the fastify
+用于prometheus的alertmanager模块的webhook转发适配器，支持企业微信和钉钉
+使用fastify作为服务端
+支持prometheus监听自身的健康状况

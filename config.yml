@@ -1,9 +1,10 @@
 targets:
   qywx1:
     template: ./tmpls/default.js
-    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=ddddddddddddd
+    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=qqqqqqqqqqqqqqqqqqqqqqqq
     type: weixin
-  qywx2:
-    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=fffffffffffff
-    type: weixin
+  dingding1:
+    url: https://oapi.dingtalk.com/robot/send?access_token=dddddddddddddddddddddddddddddddddd
+    type: dingtalk
+    secret: ssssssssssssssssssssssssssssssssss
 ports: 8061

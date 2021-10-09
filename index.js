@@ -1,7 +1,7 @@
 const fastify = require('fastify')
 const dayjs = require('dayjs')
 const fs = require('fs')
-const fetcher = require('./fetcher').default
+const { default: fetcher, fetchUrl } = require('./fetcher')
 const { config } = require('./config-init')
 const path = require('path')
 
@@ -9,13 +9,33 @@ const server = fastify()
 
 const adapters = []
 
+const getAdapter = (() => {
+    const map = new Map()
+
+    return (type) => {
+        let a
+        if (a = map.get(type)) {
+            return a
+        }
+        a = require(`./adapters/${type}`)
+        map.set(type, a)
+        return a
+    }
+})()
+
 config.targets.forEach(p => {
     adapters.push(p.name)
     const tmpl = path.join(__dirname, p.template ?? './tmpls/default.js')
-    const adapter = {
+    // 钉钉加密
+    const adapter = (['dingtalk'].includes(p.type) && p.secret) ? {
+        tmpl: fs.readFileSync(tmpl, { encoding: 'utf8' }),
+        fetcher: fetchUrl,
+        bodyCreater: getAdapter(p.type).createrBoday,
+        createSign: getAdapter(p.type).createSign(p)
+    } : {
         tmpl: fs.readFileSync(tmpl, { encoding: 'utf8' }),
         fetcher: fetcher(p.url),
-        bodyCreater: require(`./adapters/${p.type}`).createrBoday
+        bodyCreater: getAdapter(p.type).createrBoday,
     }
     server.decorate(p.name, adapter)
 })
@@ -45,7 +65,8 @@ server.post('/*', async function (request, reply) {
             return ${adapter.tmpl}
         })(request.body, dayjs)`))
         console.debug(`adapter ${p} body:`, body);
-        return adapter.fetcher(body).then(async res => {
+        const rePms = adapter.createSign ? adapter.fetcher(adapter.createSign(), body) : adapter.fetcher(body)
+        return rePms.then(async res => {
             console.log(`adapter ${p} response:`, res.status, await res.text());
         }).catch(err => {
             console.error(`adapter ${p} error:`, res.status, err)
