@@ -1,10 +1,14 @@
 targets:
   qywx1:
-    template: ./tmpls/default.js
-    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=qqqqqqqqqqqqqqqqqqqqqqqq
+    template: tmpls/default.js
+    url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=wwwwwwwwwwwwwwwwwwwwwwwwwwww
     type: weixin
   dingding1:
-    url: https://oapi.dingtalk.com/robot/send?access_token=dddddddddddddddddddddddddddddddddd
+    url: https://oapi.dingtalk.com/robot/send?access_token=dddddddddddddddddddddddddddddddd
     type: dingtalk
     secret: ssssssssssssssssssssssssssssssssss
+  feishu1:
+    url: https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxxxx
+    type: feishu
+    # secret: ssssssssssssssssssssssssssssssssss
 ports: 8061

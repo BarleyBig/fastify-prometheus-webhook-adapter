@@ -1,43 +1,26 @@
 const fastify = require('fastify')
-const dayjs = require('dayjs')
-const fs = require('fs')
-const { default: fetcher, fetchUrl } = require('./fetcher')
-const { config } = require('./config-init')
 const path = require('path')
+const { config } = require('./config-init')
 
 const server = fastify()
 
-const adapters = []
-
 const getAdapter = (() => {
     const map = new Map()
-
     return (type) => {
         let a
         if (a = map.get(type)) {
             return a
         }
-        a = require(`./adapters/${type}`)
+        a = require(`./adapters/${type}`).default
         map.set(type, a)
         return a
     }
 })()
 
-config.targets.forEach(p => {
-    adapters.push(p.name)
-    const tmpl = path.join(__dirname, p.template ?? './tmpls/default.js')
-    // 钉钉加密
-    const adapter = (['dingtalk'].includes(p.type) && p.secret) ? {
-        tmpl: fs.readFileSync(tmpl, { encoding: 'utf8' }),
-        fetcher: fetchUrl,
-        bodyCreater: getAdapter(p.type).createrBoday,
-        createSign: getAdapter(p.type).createSign(p)
-    } : {
-        tmpl: fs.readFileSync(tmpl, { encoding: 'utf8' }),
-        fetcher: fetcher(p.url),
-        bodyCreater: getAdapter(p.type).createrBoday,
-    }
-    server.decorate(p.name, adapter)
+const adapters = config.targets.map(p => {
+    p.template = path.join(__dirname, p.template ?? './tmpls/default.js')
+    server.decorate(p.name, new (getAdapter(p.type))(p))
+    return p.name
 })
 
 server.get('/*', async (request, reply) => {
@@ -51,7 +34,6 @@ alertmanager_alerts_invalid_total{version="v1"} 0
 alertmanager_alerts_invalid_total{version="v2"} 0`
 })
 server.post('/*', async function (request, reply) {
-    // console.log(request.params['*']);
     let names = adapters
     if (request.params['*']) {
         const specifieds = request.params['*'].split('/').filter(p => p)
@@ -59,18 +41,18 @@ server.post('/*', async function (request, reply) {
     }
     names.length || (names = adapters)
     // return names
+    // console.log(names);
     await Promise.all(names.map(p => {
+        // console.log(p);
         const adapter = this[p]
-        const body = adapter.bodyCreater(eval(`((info, dayjs) => {
-            return ${adapter.tmpl}
-        })(request.body, dayjs)`))
-        console.debug(`adapter ${p} body:`, body);
-        const rePms = adapter.createSign ? adapter.fetcher(adapter.createSign(), body) : adapter.fetcher(body)
-        return rePms.then(async res => {
-            console.log(`adapter ${p} response:`, res.status, await res.text());
-        }).catch(err => {
-            console.error(`adapter ${p} error:`, res.status, err)
-        })
+        // console.log(adapter);
+        return adapter.send(request.body)
+            .then(async res => {
+                console.log(`adapter ${p} response:`, res.status, await res.text());
+            })
+            .catch(err => {
+                console.error(`adapter ${p} error:`, res.status, err)
+            })
     }))
     return 'OK'
 })

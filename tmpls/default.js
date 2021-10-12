@@ -11,8 +11,5 @@ ${Object.entries(p.annotations).map(([k, v]) => `> - ${k}:  ${v}`).join('\n')}
 
 **事件标签:**  
 ${Object.entries(p.labels).map(([k, v]) => `> - ${k}:  ${v}`).join('\n')}
-
 `).join('')}
-
-
 `

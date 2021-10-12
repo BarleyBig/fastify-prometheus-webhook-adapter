@@ -6,6 +6,7 @@ config.targets = Object.entries(config.targets).map(([k, v]) => {
     v.name = k
     return v
 })
+console.log('current config', config);
 module.exports = {
     config
 }
