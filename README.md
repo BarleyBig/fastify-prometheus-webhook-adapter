@@ -47,8 +47,3 @@ receivers:
 ## 使用镜像
 1.在docker文件夹下编写你自己的config.yml文件及tmpls文件     
 2.编辑并使用docker文件夹下的Dockerfile生成你自己的docker镜像
-
-# other
-
-    飞书不支持markdown格式，但是支持卡片式的通知
-    由于本人没有飞书账号和群，没办法测试，暂时只能支持飞书的txt模式，之后考虑将飞书的默认模板替换为卡片式

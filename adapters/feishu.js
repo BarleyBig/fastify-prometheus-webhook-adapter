@@ -26,8 +26,20 @@ class Feishu extends Adapter {
         const obj = {
             timestamp,
             sign,
-            msg_type: 'text',
-            content: { text }
+            msg_type: 'interactive',
+            card: {
+                config: {
+                    enable_forward: true,
+                },
+                i18n_elements: {
+                    zh_cn: [
+                        {
+                            tag: "markdown",
+                            content: text
+                        }
+                    ]
+                }
+            }
         }
         return JSON.stringify(obj)
     }
