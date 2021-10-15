@@ -4,11 +4,11 @@ targets:
     url: https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=wwwwwwwwwwwwwwwwwwwwwwwwwwww
     type: weixin
   dingding1:
-    url: https://oapi.dingtalk.com/robot/send?access_token=dddddddddddddddddddddddddddddddd
+    url: https://oapi.dingtalk.com/robot/send?access_token=dddddddddddddddddddddd
     type: dingtalk
     secret: ssssssssssssssssssssssssssssssssss
   feishu1:
     url: https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxxxx
     type: feishu
-    # secret: ssssssssssssssssssssssssssssssssss
+  secret: ssssssssssssssssssssssssssssssssss
 ports: 8061

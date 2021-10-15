@@ -1,11 +1,12 @@
 {
   "name": "fastify-prometheus-webhook-adapter",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
     "start": "node ./index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack"
   },
   "keywords": [
     "prometheus",
@@ -17,13 +18,16 @@
   "author": "BarleyBig",
   "license": "ISC",
   "dependencies": {
+    "copy-webpack-plugin": "^9.0.1",
     "dayjs": "^1.10.7",
     "fastify": "^3.21.3",
     "js-yaml": "^4.1.0",
-    "undici-fetch": "^1.0.0-rc.4"
+    "undici-fetch": "^1.0.0-rc.4",
+    "webpack": "^5.58.2",
+    "webpack-cli": "^4.9.0"
   },
   "devDependencies": {
-    "@types/node": "^16.9.2",
-    "@tsconfig/node16": "^1.0.2"
+    "@tsconfig/node16": "^1.0.2",
+    "@types/node": "^16.9.2"
   }
 }

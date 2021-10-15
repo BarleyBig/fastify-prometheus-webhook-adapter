@@ -35,7 +35,7 @@ class Adapter {
     createContent(info) {
         // 生成消息content
         const content = this.tmpl(dayjs, info)
-        console.log(`${this.config.name} content:`, content);
+        log.info({ [this.config.name]: content });
         return content
     }
 

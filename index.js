@@ -2,7 +2,13 @@ const fastify = require('fastify')
 const path = require('path')
 const { config } = require('./config-init')
 
-const server = fastify()
+const server = fastify({
+    logger: {
+        base: undefined,
+        timestamp: () => `,"time":"${new Date().toISOString()}"`
+    }
+})
+global.log = server.log
 
 const getAdapter = (() => {
     const map = new Map()
@@ -16,7 +22,6 @@ const getAdapter = (() => {
         return a
     }
 })()
-
 const adapters = config.targets.map(p => {
     p.template = path.join(__dirname, p.template ?? './tmpls/default.js')
     server.decorate(p.name, new (getAdapter(p.type))(p))
@@ -48,10 +53,19 @@ server.post('/*', async function (request, reply) {
         // console.log(adapter);
         return adapter.send(request.body)
             .then(async res => {
-                console.log(`adapter ${p} response:`, res.status, await res.text());
+                log.info({
+                    [`adapter-${p}`]: {
+                        status: res.status,
+                        body: await res.text()
+                    }
+                });
             })
             .catch(err => {
-                console.error(`adapter ${p} error:`, res.status, err)
+                log.error({
+                    [`adapter-${p}`]: {
+                        status: res.status, err
+                    }
+                })
             })
     }))
     return 'OK'
@@ -59,8 +73,8 @@ server.post('/*', async function (request, reply) {
 
 server.listen(config.ports, '0.0.0.0', (err, address) => {
     if (err) {
-        console.error(err)
+        log.error(err)
         process.exit(1)
     }
-    console.log(`Server listening at ${address}`)
+    // console.log(`Server listening at ${address}`)
 })
