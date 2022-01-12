@@ -2,7 +2,7 @@
 
 ${info.alerts.map(p => `--------------------------------  
 
-**告警级别:**  ${({ 'normal': '💚', 'yellow': '💛💛', 'red': '❤❤❤' })[p.labels.severity] ?? '💚'}  
+**告警级别:**  ${(info.status.toUpperCase() === 'RESOLVED' ? '💙' : { 'normal': '💛', 'yellow': '💜💜', 'red': '❤❤❤' })[p.labels.severity] ?? '💛'}  
 
 **触发时间:**   \`${dayjs(p.startsAt).format('YYYY-MM-DD HH:mm:ss')}\`  
 
