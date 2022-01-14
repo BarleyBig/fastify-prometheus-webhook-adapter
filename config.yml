@@ -10,5 +10,5 @@ targets:
   feishu1:
     url: https://open.feishu.cn/open-apis/bot/v2/hook/xxxxxxxxxxxxxxxxxxxxxxx
     type: feishu
-  secret: ssssssssssssssssssssssssssssssssss
+    secret: ssssssssssssssssssssssssssssssssss
 ports: 8061

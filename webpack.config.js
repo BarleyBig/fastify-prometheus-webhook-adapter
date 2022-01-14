@@ -16,9 +16,9 @@ module.exports = {
     plugins: [
         new CopyPlugin({
             patterns: [
-                { from: "./tmpls", to: to('tmpls') },
-                { from: "./config.yml", to: to('config.yml') },
-                { from: "./node_modules/undici/lib/llhttp/llhttp.wasm", to: to('llhttp/llhttp.wasm') },
+                { from: "./tmpls", to: to('tmpls'), force: true, info: { minimized: true }, },
+                { from: "./config.yml", to: to('config.yml'), force: true },
+                { from: "./node_modules/undici/lib/llhttp/llhttp.wasm", to: to('llhttp/llhttp.wasm'), force: true },
             ],
         }),
     ],
