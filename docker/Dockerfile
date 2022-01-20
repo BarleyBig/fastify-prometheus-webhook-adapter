@@ -1,4 +1,4 @@
-FROM registry.cn-beijing.aliyuncs.com/geovis-service/prometheus-webhook:1.0.3
+FROM registry.cn-beijing.aliyuncs.com/geovis-service/prometheus-webhook:1.0.4
 
 COPY config.yml /app/config.yml
 # COPY tmpls /app/tmpls
